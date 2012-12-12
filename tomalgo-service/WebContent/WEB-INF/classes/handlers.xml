@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE handlers>
+<handlers>
+	<handler>
+    	<action>checkuser</action>
+    	<handler-class>CheckUserHandler</handler-class>   
+	</handler>  
+	<handler>
+    	<action>login</action>
+    	<handler-class>LoginHandler</handler-class>   
+	</handler> 
+	<handler>
+    	<action>logout</action>
+    	<handler-class>LogoutHandler</handler-class>   
+	</handler>  
+</handlers>

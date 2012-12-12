@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Context>
+<Context path="/tomalgo-service" docBase="tomalgo-service" reloadable="true" crossContext="true">
+    <Resource name="jdbc/TomalgoDB" auth="Container" type="javax.sql.DataSource"
+       maxActive="10" maxIdle="5" 
+       username="fernando" password="mimara"
+       driverClassName="com.mysql.jdbc.Driver"  
+       url="jdbc:mysql://localhost:3306/tomalgo?autoReconnect=true" />
+ </Context>
