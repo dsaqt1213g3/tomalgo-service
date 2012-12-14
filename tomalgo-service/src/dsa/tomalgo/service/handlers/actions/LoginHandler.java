@@ -29,17 +29,27 @@ public class LoginHandler extends Handler {
 		try {
 			Connection connection = dataSource.getConnection();
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("select password from user " +
+			ResultSet resultSet = statement.executeQuery("select password,enterprise,enable from user " +
 					"where username='" + username + "';");
 			
-			if(resultSet.next() && Util.toHexString(resultSet.getBytes("password")).equals(password)){	
-				request.getSession().setAttribute(username, "Connected");				
-				result = new JSONResult("OK", "{LoginOK}");
-			} else {
-				result = new JSONResult("OK", "{LoginKO}");
-			}
+			if(resultSet.next()){
+				if(resultSet.getBoolean("enable")) {
+					if(Util.toHexString(resultSet.getBytes("password")).equals(password)) {					
+						request.getSession().setAttribute(username, "Connected");				
+						result = new JSONResult("OK", 
+								"{\"succeed\":\"true\",\"enterprise\":\"" + resultSet.getBoolean("enterprise") + "\"}");
+					} else 						
+						result = new JSONResult("OK", 
+								"{\"succeed\":\"false\",\"message\":\"Incorrect password.\"}");
+				} else 					
+					result = new JSONResult("OK",
+							"{\"succeed\":\"false\",\"message\":\"The account is not activated.\"}");
+			} else 
+				result = new JSONResult("OK", 
+						"{\"succeed\":\"false\",\"message\":\"The account doesn't exist.\"}");
+			
 		} catch (SQLException e) {
-			throw new HandlerException(401, "Database error");
+			throw new HandlerException(401, "Database error: Can't search in the database.");
 		}
 		
 		// Sending JSON result

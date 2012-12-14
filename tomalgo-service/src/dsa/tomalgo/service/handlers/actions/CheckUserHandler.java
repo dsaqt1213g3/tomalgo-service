@@ -25,10 +25,8 @@ public class CheckUserHandler extends Handler {
 		JSONResult result;
 		if(UserSession == null) 
 			result = new JSONResult("OK", "false");	
-		else if(UserSession.equals("Connected"))
-			result = new JSONResult("OK", "true");
 		else
-			result = new JSONResult("OK", "false");
+			result = new JSONResult("OK", Boolean.toString(UserSession.equals("Connected")));
 		
 		ServletMethod.sendResult(result, request, response);
 	}

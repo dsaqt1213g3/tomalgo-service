@@ -13,4 +13,8 @@
     	<action>logout</action>
     	<handler-class>LogoutHandler</handler-class>   
 	</handler>  
+	<handler>
+    	<action>register</action>
+    	<handler-class>RegisterHandler</handler-class>   
+	</handler> 
 </handlers>

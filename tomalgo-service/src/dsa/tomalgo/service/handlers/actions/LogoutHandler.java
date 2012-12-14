@@ -21,7 +21,7 @@ public class LogoutHandler extends Handler {
 		request.getSession().setAttribute(username, null);
 		
 		// Sending JSON result		
-		ServletMethod.sendResult(new JSONResult("OK", "{}"), request, response);
+		ServletMethod.sendResult(new JSONResult("OK", "Logout successful."), request, response);
 	}
 
 }
