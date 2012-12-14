@@ -8,7 +8,7 @@
 	<handler>
     	<action>login</action>
     	<handler-class>LoginHandler</handler-class>   
-	</handler> 
+	</handler>
 	<handler>
     	<action>logout</action>
     	<handler-class>LogoutHandler</handler-class>   
@@ -16,5 +16,9 @@
 	<handler>
     	<action>register</action>
     	<handler-class>RegisterHandler</handler-class>   
+	</handler> 
+	<handler>
+    	<action>checkusername</action>
+    	<handler-class>CheckUsernameHandler</handler-class>   
 	</handler> 
 </handlers>
