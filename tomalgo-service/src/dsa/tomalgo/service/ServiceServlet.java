@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import dsa.tomalgo.service.handlers.HandlerException;
 import dsa.tomalgo.service.handlers.HandlerFactory;
-import dsa.tomalgo.service.servlets.ServletMethod;
 
 /**
  * Servlet implementation class ServiceServlet

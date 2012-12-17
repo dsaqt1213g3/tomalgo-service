@@ -9,7 +9,7 @@
     	<action>login</action>
     	<handler-class>LoginHandler</handler-class>   
 	</handler>
-	<handler>
+	<handler auth="true">
     	<action>logout</action>
     	<handler-class>LogoutHandler</handler-class>   
 	</handler>  
@@ -21,4 +21,5 @@
     	<action>checkusername</action>
     	<handler-class>CheckUsernameHandler</handler-class>   
 	</handler> 
+	
 </handlers>

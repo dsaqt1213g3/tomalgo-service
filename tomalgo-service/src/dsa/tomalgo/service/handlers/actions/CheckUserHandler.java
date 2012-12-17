@@ -4,9 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dsa.tomalgo.model.JSONResult;
+import dsa.tomalgo.service.ServletMethod;
 import dsa.tomalgo.service.handlers.Handler;
 import dsa.tomalgo.service.handlers.HandlerException;
-import dsa.tomalgo.service.servlets.ServletMethod;
 
 public class CheckUserHandler extends Handler {
 
@@ -19,14 +19,14 @@ public class CheckUserHandler extends Handler {
 		
 		// Getting the session of the user
 		
-		String UserSession = (String) request.getSession().getAttribute(username);
+		String lastUsername = (String) request.getSession().getAttribute("username");
 		
 		// Sending JSON result
 		JSONResult result;
-		if(UserSession == null) 
+		if(lastUsername == null) 
 			result = new JSONResult("OK", "false");	
 		else
-			result = new JSONResult("OK", Boolean.toString(UserSession.equals("Connected")));
+			result = new JSONResult("OK", Boolean.toString(lastUsername.equals(username)));
 		
 		ServletMethod.sendResult(result, request, response);
 	}

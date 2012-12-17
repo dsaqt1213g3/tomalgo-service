@@ -1,4 +1,4 @@
-package dsa.tomalgo.service.servlets;
+package dsa.tomalgo.service;
 
 import java.io.IOException;
 

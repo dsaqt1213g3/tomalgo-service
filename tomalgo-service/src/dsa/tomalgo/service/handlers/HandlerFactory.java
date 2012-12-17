@@ -3,6 +3,10 @@ package dsa.tomalgo.service.handlers;
 import java.io.IOException;
 import java.util.Hashtable;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,8 +22,17 @@ import dsa.tomalgo.service.ServiceServlet;
 public class HandlerFactory {
 	private static HandlerFactory instance = null;
 	private Hashtable<String, HandlerInfo> handlerList = null;
+	private DataSource dataSource;
 
 	private HandlerFactory() {
+		try {
+			Context initContext = new InitialContext();
+			Context context = (Context) initContext.lookup("java:/comp/env");
+			dataSource = (DataSource) context.lookup("jdbc/TomalgoDB");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+		
 		handlerList = new Hashtable<String, HandlerInfo>();
 		try {
 			loadHandlers();
@@ -41,18 +54,27 @@ public class HandlerFactory {
 		return instance;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Handler createHandler(String action) throws HandlerException, InstantiationException, IllegalAccessException{
 		HandlerInfo hInfo = handlerList.get(action);
-		if(hInfo == null ) throw new HandlerException(401, "Action not found: '" +  action + "'");
+		if(hInfo == null) 
+			throw new HandlerException(401, "Action not found: '" +  action + "'");
 		
-		Class<Handler> handler;
+		Handler handler;
 		try {
-			handler = (Class<Handler>) Class.forName(hInfo.getHandlerClass());
+			handler = (Handler) Class.forName(hInfo.getHandlerClass()).newInstance();
 		} catch (ClassNotFoundException e) {
 			throw new HandlerException(401, "Handler class not found: " + action);
 		}
-		return handler.newInstance();
+		
+		handler.setDataSource(dataSource);
+		return handler;
+	}
+	
+	public HandlerInfo getInfo(String action) throws HandlerException {
+		HandlerInfo hInfo = handlerList.get(action);
+		if(hInfo == null ) throw new HandlerException(401, "Action not found: '" +  action + "'");
+		
+		return hInfo;
 	}
 
 	private void loadHandlers() throws ParserConfigurationException,

@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dsa.tomalgo.model.JSONResult;
+import dsa.tomalgo.service.ServletMethod;
 import dsa.tomalgo.service.handlers.Handler;
 import dsa.tomalgo.service.handlers.HandlerException;
-import dsa.tomalgo.service.servlets.ServletMethod;
 import dsa.util.Util;
 
 public class LoginHandler extends Handler {
@@ -35,7 +35,7 @@ public class LoginHandler extends Handler {
 			if(resultSet.next()){
 				if(resultSet.getBoolean("enable")) {
 					if(Util.toHexString(resultSet.getBytes("password")).equals(password)) {					
-						request.getSession().setAttribute(username, "Connected");				
+						request.getSession().setAttribute("username", username);				
 						result = new JSONResult("OK", 
 								"{\"succeed\":\"true\",\"enterprise\":\"" + resultSet.getBoolean("enterprise") + "\"}");
 					} else 						

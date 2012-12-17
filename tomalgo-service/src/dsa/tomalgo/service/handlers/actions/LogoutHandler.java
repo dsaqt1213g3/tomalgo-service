@@ -4,9 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dsa.tomalgo.model.JSONResult;
+import dsa.tomalgo.service.ServletMethod;
 import dsa.tomalgo.service.handlers.Handler;
 import dsa.tomalgo.service.handlers.HandlerException;
-import dsa.tomalgo.service.servlets.ServletMethod;
 
 public class LogoutHandler extends Handler {
 
@@ -18,7 +18,7 @@ public class LogoutHandler extends Handler {
 			throw new HandlerException(401, "Missing parameter in " + this.getClass().getSimpleName());
 		
 		// Getting the session of the user
-		request.getSession().setAttribute(username, null);
+		request.getSession().removeAttribute("username");
 		
 		// Sending JSON result		
 		ServletMethod.sendResult(new JSONResult("OK", "Logout successful."), request, response);
