@@ -66,8 +66,6 @@ public class AuthFilter implements Filter {
 			return;
 		}
 		
-		System.out.println("filtro pasado");
-		
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}
