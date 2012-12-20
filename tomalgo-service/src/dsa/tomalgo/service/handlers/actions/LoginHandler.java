@@ -8,7 +8,6 @@ import java.sql.Statement;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dsa.tomalgo.model.JSONResult;
 import dsa.tomalgo.service.ServletMethod;
 import dsa.tomalgo.service.handlers.Handler;
 import dsa.tomalgo.service.handlers.HandlerException;
@@ -25,7 +24,7 @@ public class LoginHandler extends Handler {
 			throw new HandlerException(401, "Missing parameter in " + this.getClass().getSimpleName());
 		
 		// Asking database
-		JSONResult result;
+		String result;
 		try {
 			Connection connection = dataSource.getConnection();
 			Statement statement = connection.createStatement();
@@ -36,17 +35,13 @@ public class LoginHandler extends Handler {
 				if(resultSet.getBoolean("enable")) {
 					if(Util.toHexString(resultSet.getBytes("password")).equals(password)) {					
 						request.getSession().setAttribute("username", username);				
-						result = new JSONResult("OK", 
-								"{\"succeed\":\"true\",\"enterprise\":\"" + resultSet.getBoolean("enterprise") + "\"}");
+						result = "{\"succeed\":\"true\",\"enterprise\":\"" + resultSet.getBoolean("enterprise") + "\"}";
 					} else 						
-						result = new JSONResult("OK", 
-								"{\"succeed\":\"false\",\"message\":\"Incorrect password.\"}");
+						result = "{\"succeed\":\"false\",\"message\":\"Incorrect password.\"}";
 				} else 					
-					result = new JSONResult("OK",
-							"{\"succeed\":\"false\",\"message\":\"The account is not activated.\"}");
+					result = "{\"succeed\":\"false\",\"message\":\"The account is not activated.\"}";
 			} else 
-				result = new JSONResult("OK", 
-						"{\"succeed\":\"false\",\"message\":\"The account doesn't exist.\"}");
+				result = "{\"succeed\":\"false\",\"message\":\"The account doesn't exist.\"}";
 			
 		} catch (SQLException e) {
 			throw new HandlerException(401, "Database error: Can't search in the database.");

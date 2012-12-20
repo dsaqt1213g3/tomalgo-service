@@ -21,5 +21,8 @@
     	<action>checkusername</action>
     	<handler-class>CheckUsernameHandler</handler-class>   
 	</handler> 
-	
+	<handler auth="true">
+    	<action>changepassword</action>
+    	<handler-class>ChangePasswordHandler</handler-class>   
+	</handler> 
 </handlers>
