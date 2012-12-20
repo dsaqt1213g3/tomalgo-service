@@ -7,7 +7,6 @@ import java.sql.Statement;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dsa.tomalgo.model.JSONResult;
 import dsa.tomalgo.service.ServletMethod;
 import dsa.tomalgo.service.handlers.Handler;
 import dsa.tomalgo.service.handlers.HandlerException;
@@ -26,7 +25,7 @@ public class RegisterHandler extends Handler {
 			throw new HandlerException(401, "Missing parameter in " + this.getClass().getSimpleName());
 		
 		// Saving user into database
-		JSONResult result;
+		String result;
 		try {
 			Connection connection = dataSource.getConnection();
 			Statement statement = connection.createStatement();
@@ -39,7 +38,7 @@ public class RegisterHandler extends Handler {
 						"null,'" + username + "',0x" + password + ",'" +
 						mail + "','" + birth + "','0','1');");			
 					
-			result = new JSONResult("OK", "Added into database.");			
+			result = "Added into database.";			
 		} catch (SQLException e) {
 			throw new HandlerException(401, "Database error: Cant add the new entry.");
 		}
