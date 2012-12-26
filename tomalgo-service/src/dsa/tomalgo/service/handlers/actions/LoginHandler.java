@@ -37,16 +37,16 @@ public class LoginHandler extends Handler {
 					if(Util.toHexString(resultSet.getBytes("password")).equals(password)) {					
 						request.getSession().setAttribute("username", username);				
 						result = new JSONResult("OK", 
-								"{\"succeed\":\"true\",\"enterprise\":\"" + resultSet.getBoolean("enterprise") + "\"}");
+								"{\"succeed\":true,\"enterprise\":" + resultSet.getBoolean("enterprise") + "}");
 					} else 						
 						result = new JSONResult("OK", 
-								"{\"succeed\":\"false\",\"message\":\"Incorrect password.\"}");
+								"{\"succeed\":false,\"message\":\"Incorrect password.\"}");
 				} else 					
 					result = new JSONResult("OK",
-							"{\"succeed\":\"false\",\"message\":\"The account is not activated.\"}");
+							"{\"succeed\":false,\"message\":\"The account is not activated.\"}");
 			} else 
 				result = new JSONResult("OK", 
-						"{\"succeed\":\"false\",\"message\":\"The account doesn't exist.\"}");
+						"{\"succeed\":false,\"message\":\"The account doesn't exist.\"}");
 			
 		} catch (SQLException e) {
 			throw new HandlerException(401, "Database error: Can't search in the database.");

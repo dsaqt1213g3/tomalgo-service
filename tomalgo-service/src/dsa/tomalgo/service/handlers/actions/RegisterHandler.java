@@ -30,6 +30,7 @@ public class RegisterHandler extends Handler {
 		try {
 			Connection connection = dataSource.getConnection();
 			Statement statement = connection.createStatement();
+			
 			if(enterprise.equals("1"))
 				statement.execute("INSERT INTO user VALUES(" +
 						"null,'" + username + "',0x" + password + ",'" +
@@ -38,8 +39,8 @@ public class RegisterHandler extends Handler {
 				statement.execute("INSERT INTO user VALUES(" +
 						"null,'" + username + "',0x" + password + ",'" +
 						mail + "','" + birth + "','0','1');");			
-					
-			result = new JSONResult("OK", "Added into database.");			
+			
+			result = new JSONResult("OK", "\"Added into database.\"");			
 		} catch (SQLException e) {
 			throw new HandlerException(401, "Database error: Cant add the new entry.");
 		}
