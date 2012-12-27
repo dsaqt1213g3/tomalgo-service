@@ -13,7 +13,7 @@ public class ServletMethod {
 	
 	public static void sendError(String error, int code, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.setAttribute("error", new JSONResult("KO", code + "- " + error).toJSON());
+			request.setAttribute("result", new JSONResult("KO", "\"" +  code + "- " + error + "\"").toJSON());
 			response.sendError(code);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -22,8 +22,8 @@ public class ServletMethod {
 	}
 	
 	public static void sendResult(String result, HttpServletRequest request, HttpServletResponse response) {
-		JSONResult message = new JSONResult("OK", result);
-		request.setAttribute("result", message.toJSON());
+		JSONResult json = new JSONResult("OK", result);
+		request.setAttribute("result", json.toJSON());
 		RequestDispatcher rd = request.getRequestDispatcher("/result.jsp");		
 		try {
 			rd.forward(request, response);

@@ -20,7 +20,7 @@ public class JSONResult {
 	}
 	
 	public String toJSON() {
-		return new Gson().toJson(this);
+		return "{\"status\":\"" + status + "\",\"result\":" + result + "}";
 	}
 
 	public static JSONResult fromJSON(String json) {

@@ -25,14 +25,6 @@ public class ChangePasswordHandler extends Handler {
 		if(username == null || oldpassword == null || newpassword == null)
 			throw new HandlerException(401, "Missing parameter in " + this.getClass().getSimpleName());
 		
-		// Checking if username equals username of httpsession
-		String sessionUsername = (String) request.getSession().getAttribute("username");
-		
-		if(!sessionUsername.equals(username)) {
-			ServletMethod.sendResult("false", request, response);	
-			return;
-		}
-		
 		// Checking oldpassword equals newpassword
 		Connection connection;
 		Statement statement;
@@ -57,7 +49,7 @@ public class ChangePasswordHandler extends Handler {
 				ServletMethod.sendResult("false", request, response);
 			
 		} catch (SQLException e) {
-			throw new HandlerException(401, "Database error: Can't operate with the database.");
+			throw new HandlerException(400, "Database error: " + e.getMessage());
 		}
 	}
 
