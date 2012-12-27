@@ -49,7 +49,7 @@ public class LoginHandler extends Handler {
 						"{\"succeed\":false,\"message\":\"The account doesn't exist.\"}");
 			
 		} catch (SQLException e) {
-			throw new HandlerException(401, "Database error: Can't search in the database.");
+			throw new HandlerException(401, "Database error: " + e.getMessage());
 		}
 		
 		// Sending JSON result

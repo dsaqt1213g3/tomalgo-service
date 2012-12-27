@@ -20,6 +20,5 @@
 	<handler>
     	<action>checkusername</action>
     	<handler-class>CheckUsernameHandler</handler-class>   
-	</handler> 
-	
+	</handler> 	
 </handlers>

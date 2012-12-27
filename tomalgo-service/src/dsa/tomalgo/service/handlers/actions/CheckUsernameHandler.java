@@ -33,7 +33,7 @@ public class CheckUsernameHandler extends Handler {
 			result = new JSONResult("OK", Boolean.toString(resultSet.next()));
 			
 		} catch (SQLException e) {
-			throw new HandlerException(401, "Database error: Can't search in the database.");
+			throw new HandlerException(401, "Database error: " + e.getMessage());
 		}
 		
 		ServletMethod.sendResult(result, request, response);
