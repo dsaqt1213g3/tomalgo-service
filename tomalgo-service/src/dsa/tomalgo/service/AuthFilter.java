@@ -43,7 +43,7 @@ public class AuthFilter implements Filter {
 		// Getting action parameter
 		String action = (String) request.getParameter("action");
 		if(action == null) {
-			ServletMethod.sendError("Missing parameter.", 401,
+			ServletMethod.sendError("Missing parameter.", 400,
 					(HttpServletRequest) request, (HttpServletResponse) response);
 			return;
 		}

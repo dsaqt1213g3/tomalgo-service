@@ -57,13 +57,13 @@ public class HandlerFactory {
 	public Handler createHandler(String action) throws HandlerException, InstantiationException, IllegalAccessException{
 		HandlerInfo hInfo = handlerList.get(action);
 		if(hInfo == null) 
-			throw new HandlerException(401, "Action not found: '" +  action + "'");
+			throw new HandlerException(404, "Action not found: '" +  action + "'");
 		
 		Handler handler;
 		try {
 			handler = (Handler) Class.forName(hInfo.getHandlerClass()).newInstance();
 		} catch (ClassNotFoundException e) {
-			throw new HandlerException(401, "Handler class not found: " + action);
+			throw new HandlerException(404, "Handler class not found: " + action);
 		}
 		
 		handler.setDataSource(dataSource);
@@ -72,7 +72,7 @@ public class HandlerFactory {
 	
 	public HandlerInfo getInfo(String action) throws HandlerException {
 		HandlerInfo hInfo = handlerList.get(action);
-		if(hInfo == null ) throw new HandlerException(401, "Action not found: '" +  action + "'");
+		if(hInfo == null ) throw new HandlerException(404, "Action not found: '" +  action + "'");
 		
 		return hInfo;
 	}

@@ -19,7 +19,7 @@ public class CheckUsernameHandler extends Handler {
 		// Getting parameters
 		String username = (String) request.getParameter("username");
 		if(username == null)
-			throw new HandlerException(401, "Missing parameter in " + this.getClass().getSimpleName());
+			throw new HandlerException(400, "Missing parameter in " + this.getClass().getSimpleName());
 		
 		// Asking database
 		String result;
@@ -32,7 +32,7 @@ public class CheckUsernameHandler extends Handler {
 			result = Boolean.toString(resultSet.next());
 			
 		} catch (SQLException e) {
-			throw new HandlerException(401, "Database error: Can't search in the database.");
+			throw new HandlerException(400, "Database error: " + e.getMessage());
 		}
 		
 		ServletMethod.sendResult(result, request, response);

@@ -21,7 +21,7 @@ public class LoginHandler extends Handler {
 		String username = (String) request.getParameter("username");
 		String password = (String) request.getParameter("password");
 		if(username == null || password == null) 
-			throw new HandlerException(401, "Missing parameter in " + this.getClass().getSimpleName());
+			throw new HandlerException(400, "Missing parameter in " + this.getClass().getSimpleName());
 		
 		// Asking database
 		String result;
@@ -35,16 +35,17 @@ public class LoginHandler extends Handler {
 				if(resultSet.getBoolean("enable")) {
 					if(Util.toHexString(resultSet.getBytes("password")).equals(password)) {					
 						request.getSession().setAttribute("username", username);				
-						result = "{\"succeed\":\"true\",\"enterprise\":\"" + resultSet.getBoolean("enterprise") + "\"}";
+						result = "{\"succeed\":true,\"enterprise\":" + resultSet.getBoolean("enterprise") + "}";
 					} else 						
-						result = "{\"succeed\":\"false\",\"message\":\"Incorrect password.\"}";
-				} else 					
-					result = "{\"succeed\":\"false\",\"message\":\"The account is not activated.\"}";
+						result = "{\"succeed\":false,\"message\":\"Incorrect password.\"}";
+				} else 			
+					result = "{\"succeed\":false,\"message\":\"The account is not activated.\"}";
+
 			} else 
-				result = "{\"succeed\":\"false\",\"message\":\"The account doesn't exist.\"}";
+				result = "{\"succeed\":false,\"message\":\"The account doesn't exist.\"}";
 			
 		} catch (SQLException e) {
-			throw new HandlerException(401, "Database error: Can't search in the database.");
+			throw new HandlerException(400, "Database error: " + e.getMessage());
 		}
 		
 		// Sending JSON result
