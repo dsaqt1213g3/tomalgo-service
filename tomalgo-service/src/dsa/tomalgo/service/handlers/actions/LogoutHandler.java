@@ -15,7 +15,7 @@ public class LogoutHandler extends Handler {
 		request.getSession().removeAttribute("username");
 		
 		// Sending JSON result		
-		ServletMethod.sendResult("Logout successful.", request, response);
+		ServletMethod.sendResult("\"Logout successful.\"", request, response);
 	}
 
 }

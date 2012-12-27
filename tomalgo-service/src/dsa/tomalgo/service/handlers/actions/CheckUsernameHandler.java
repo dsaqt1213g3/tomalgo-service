@@ -32,7 +32,7 @@ public class CheckUsernameHandler extends Handler {
 			result = Boolean.toString(resultSet.next());
 			
 		} catch (SQLException e) {
-			throw new HandlerException(401, "Database error: " + e.getMessage());
+			throw new HandlerException(400, "Database error: " + e.getMessage());
 		}
 		
 		ServletMethod.sendResult(result, request, response);

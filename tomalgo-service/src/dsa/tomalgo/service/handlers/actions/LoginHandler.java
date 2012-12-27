@@ -45,7 +45,7 @@ public class LoginHandler extends Handler {
 				result = "{\"succeed\":false,\"message\":\"The account doesn't exist.\"}";
 			
 		} catch (SQLException e) {
-			throw new HandlerException(401, "Database error: " + e.getMessage());
+			throw new HandlerException(400, "Database error: " + e.getMessage());
 		}
 		
 		// Sending JSON result

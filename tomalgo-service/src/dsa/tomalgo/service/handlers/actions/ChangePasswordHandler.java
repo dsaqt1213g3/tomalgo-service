@@ -49,7 +49,7 @@ public class ChangePasswordHandler extends Handler {
 				ServletMethod.sendResult("false", request, response);
 			
 		} catch (SQLException e) {
-			throw new HandlerException(401, "Database error: " + e.getMessage());
+			throw new HandlerException(400, "Database error: " + e.getMessage());
 		}
 	}
 

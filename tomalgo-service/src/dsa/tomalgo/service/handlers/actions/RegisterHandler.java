@@ -49,7 +49,7 @@ public class RegisterHandler extends Handler {
 
 			result = "\"Added into database.\"";	
 		} catch (SQLException e) {
-			throw new HandlerException(401, "Database error: Cant add the new entry.");
+			throw new HandlerException(400, "Database error: Cant add the new entry.");
 		}
 
 		return result;
@@ -76,7 +76,7 @@ public class RegisterHandler extends Handler {
 			result = "\"Added into database.\"";		
 
 		} catch (SQLException e) {
-			throw new HandlerException(401, "Database error: " + e.getMessage());
+			throw new HandlerException(400, "Database error: " + e.getMessage());
 		}
 		return result;
 	}
