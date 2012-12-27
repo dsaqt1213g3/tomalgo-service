@@ -21,8 +21,9 @@ public class ServletMethod {
 		}
 	}
 	
-	public static void sendResult(JSONResult result, HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("result", result.toJSON());
+	public static void sendResult(String result, HttpServletRequest request, HttpServletResponse response) {
+		JSONResult json = new JSONResult("OK", result);
+		request.setAttribute("result", json.toJSON());
 		RequestDispatcher rd = request.getRequestDispatcher("/result.jsp");		
 		try {
 			rd.forward(request, response);
