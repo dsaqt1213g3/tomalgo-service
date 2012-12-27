@@ -15,7 +15,7 @@ public class CheckUserHandler extends Handler {
 		// Getting parameters
 		String username = (String) request.getParameter("username");
 		if(username == null)
-			throw new HandlerException(401, "Missing parameter in " + this.getClass().getSimpleName());
+			throw new HandlerException(400, "Missing parameter in " + this.getClass().getSimpleName());
 		
 		// Getting the session of the user
 		

@@ -23,7 +23,7 @@ public class RegisterHandler extends Handler {
 		String birth = request.getParameter("birth");
 		String enterprise = request.getParameter("enterprise");
 		if(username == null || password == null	 || mail == null || enterprise == null) 
-			throw new HandlerException(401, "Missing parameter in " + this.getClass().getSimpleName());
+			throw new HandlerException(400, "Missing parameter in " + this.getClass().getSimpleName());
 		
 		// Saving user into database
 		JSONResult result;

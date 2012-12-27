@@ -22,7 +22,7 @@ public class LoginHandler extends Handler {
 		String username = (String) request.getParameter("username");
 		String password = (String) request.getParameter("password");
 		if(username == null || password == null) 
-			throw new HandlerException(401, "Missing parameter in " + this.getClass().getSimpleName());
+			throw new HandlerException(400, "Missing parameter in " + this.getClass().getSimpleName());
 		
 		// Asking database
 		JSONResult result;

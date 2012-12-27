@@ -17,6 +17,14 @@
     	<error-code>401</error-code>
       	<location>/error-pages/401.jsp</location>
   	</error-page>
+  	<error-page>
+  	    <error-code>400</error-code>
+  	    <location>/error-pages/400.jsp</location>
+  	</error-page>
+  	<error-page>
+  	    <error-code>404</error-code>
+  	    <location>/error-pages/404.jsp</location>
+  	</error-page>
   
   	<filter>
     	<filter-name>AuthFilter</filter-name>

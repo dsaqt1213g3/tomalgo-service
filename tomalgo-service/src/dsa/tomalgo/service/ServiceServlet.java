@@ -47,7 +47,7 @@ public class ServiceServlet extends HttpServlet {
 	private void process(HttpServletRequest request, HttpServletResponse response) {
 		String action = (String) request.getParameter("action");
 		if(action == null) {
-			ServletMethod.sendError("Missing parameter.", 401, request, response);
+			ServletMethod.sendError("Missing parameter.", 400, request, response);
 			return;
 		}
 		
