@@ -29,6 +29,10 @@ public class RegisterHandler extends Handler {
 	}
 
 	private String registerUser(HttpServletResponse response, HttpServletRequest request) throws HandlerException { 
+		Connection connection = null;
+		Statement statement = null;
+		
+		// Getting parameters
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String mail = request.getParameter("mail");
@@ -40,8 +44,8 @@ public class RegisterHandler extends Handler {
 		// Saving user into database
 		String result;
 		try {
-			Connection connection = dataSource.getConnection();
-			Statement statement = connection.createStatement();
+			connection = dataSource.getConnection();
+			statement = connection.createStatement();
 
 			statement.execute("INSERT INTO user VALUES(" +
 					"null,'" + username + "',0x" + password + ",'" +
@@ -50,12 +54,26 @@ public class RegisterHandler extends Handler {
 			result = "\"Added into database.\"";	
 		} catch (SQLException e) {
 			throw new HandlerException(400, "Database error: Cant add the new entry.");
+		} finally {
+			try {				
+				if(statement != null)
+					statement.close();
+				
+				if(connection != null)
+					connection.close();						
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return result;
 	}
 
 	private String registerEnterprise(HttpServletResponse response, HttpServletRequest request) throws HandlerException { 
+		Connection connection = null;
+		Statement statement = null;
+		
+		// Getting parameters
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String mail = request.getParameter("mail");
@@ -66,8 +84,8 @@ public class RegisterHandler extends Handler {
 		// Saving user into database
 		String result;
 		try {
-			Connection connection = dataSource.getConnection();
-			Statement statement = connection.createStatement();
+			connection = dataSource.getConnection();
+			statement = connection.createStatement();
 
 			statement.execute("INSERT INTO user VALUES(" +
 					"null,'" + username + "',0x" + password + ",'" +
@@ -77,6 +95,16 @@ public class RegisterHandler extends Handler {
 
 		} catch (SQLException e) {
 			throw new HandlerException(400, "Database error: " + e.getMessage());
+		} finally {
+			try {				
+				if(statement != null)
+					statement.close();
+				
+				if(connection != null)
+					connection.close();						
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return result;
 	}

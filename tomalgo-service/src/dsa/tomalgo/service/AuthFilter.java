@@ -58,12 +58,13 @@ public class AuthFilter implements Filter {
 			return;
 		}
 		
-		// If auth needed, checking httpSessions
-		if(hInfo.isAuth() && 
-				((HttpServletRequest) request).getSession().getAttribute("username") == null) {
-			ServletMethod.sendError("Auth needed.", 401,
-					(HttpServletRequest) request, (HttpServletResponse) response);
-			return;
+		// If auth needed, checking httpSessions		
+		if(hInfo.isAuth()) {
+			String username = request.getParameter("username"); 
+			if(username == null || !username.equals(((HttpServletRequest) request).getSession().getAttribute("username"))) {
+				ServletMethod.sendError("Auth needed.", 401, (HttpServletRequest) request, (HttpServletResponse) response);
+				return;
+			}
 		}
 		
 		// pass the request along the filter chain

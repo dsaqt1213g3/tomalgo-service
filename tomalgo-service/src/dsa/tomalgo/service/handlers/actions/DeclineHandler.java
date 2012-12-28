@@ -15,6 +15,9 @@ public class DeclineHandler extends Handler {
 
 	@Override
 	public void process(HttpServletResponse response, HttpServletRequest request) throws HandlerException {
+		Connection connection = null;
+		Statement statement = null;
+		
 		// Getting parameters
 		String username = (String) request.getParameter("username");
 		String password = (String) request.getParameter("password");
@@ -24,18 +27,33 @@ public class DeclineHandler extends Handler {
 		// Asking database
 		int updates;
 		try {
-			Connection connection = dataSource.getConnection();
-			Statement statement = connection.createStatement();
+			connection = dataSource.getConnection();
+			statement = connection.createStatement();
 						
 			updates = statement.executeUpdate("update user set enable=0 " +
 					"where username='" + username + "' and password=0x" + password + ";");		
 				
 		} catch (SQLException e) {
 			throw new HandlerException(400, "Database error: " + e.getMessage());
+		} finally {
+			try {
+				if(statement != null)
+					statement.close();
+				
+				if(connection != null)
+					connection.close();						
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 			
 		// Sending JSON result	
-		ServletMethod.sendResult(Boolean.toString(updates == 1), request, response);
+		if(updates == 1) {
+			request.getSession().removeAttribute("username");
+			ServletMethod.sendResult("true", request, response);
+		}
+		else 
+			ServletMethod.sendResult("false", request, response);
 	}
 	
 }

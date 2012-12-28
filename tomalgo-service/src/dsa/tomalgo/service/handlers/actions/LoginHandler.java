@@ -17,6 +17,10 @@ public class LoginHandler extends Handler {
 
 	@Override
 	public void process(HttpServletResponse response, HttpServletRequest request) throws HandlerException {
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet resultSet = null;	
+		
 		// Getting parameters
 		String username = (String) request.getParameter("username");
 		String password = (String) request.getParameter("password");
@@ -26,9 +30,9 @@ public class LoginHandler extends Handler {
 		// Asking database
 		String result;
 		try {
-			Connection connection = dataSource.getConnection();
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("select password,enterprise,enable from user " +
+			connection = dataSource.getConnection();
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery("select password,enterprise,enable from user " +
 					"where username='" + username + "';");
 			
 			if(resultSet.next()){
@@ -46,6 +50,19 @@ public class LoginHandler extends Handler {
 			
 		} catch (SQLException e) {
 			throw new HandlerException(400, "Database error: " + e.getMessage());
+		} finally {
+			try {	
+				if(resultSet != null)
+					resultSet.close();
+				
+				if(statement != null)
+					statement.close();
+				
+				if(connection != null)
+					connection.close();						
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		// Sending JSON result
