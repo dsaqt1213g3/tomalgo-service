@@ -48,7 +48,7 @@ public class SendEventHandler extends Handler {
 		}
 		
 		// Sending JSON result
-		ServletMethod.sendResult("Succeed", request, response);
+		ServletMethod.sendResult("\"Succeed\"", request, response);
 	}
 	
 }

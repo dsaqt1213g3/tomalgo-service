@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dsa.tomalgo.model.AccountProfile;
 import dsa.tomalgo.service.handlers.HandlerException;
 import dsa.tomalgo.service.handlers.HandlerFactory;
 import dsa.tomalgo.service.handlers.HandlerInfo;
@@ -71,8 +72,8 @@ public class AuthFilter implements Filter {
 			}
 		}
 		
-		// If enterprise needed, check in the database
-		if(hInfo.needEnterprise()) {
+		// If profile needed, check in the database
+		if(hInfo.needProfile()) {
 			String username = (String) ((HttpServletRequest) request).getSession().getAttribute("username");
 			if(username == null) {
 				ServletMethod.sendError("Missing parameter.", 400, (HttpServletRequest) request, (HttpServletResponse) response);
@@ -87,8 +88,8 @@ public class AuthFilter implements Filter {
 				statement = connection.createStatement();
 				resultSet = statement.executeQuery("select enterprise from user where username='" +
 						username + "';");
-				if(!(resultSet.next() && resultSet.getBoolean("enterprise"))) {
-					ServletMethod.sendError("Have to be a enterprise.", 401, (HttpServletRequest) request, (HttpServletResponse) response);
+				if(!(resultSet.next() && !(resultSet.getBoolean("enterprise") ^ (hInfo.getProfile() == AccountProfile.Enterprise)))) {
+					ServletMethod.sendError("With your account profile you can't do this action.", 401, (HttpServletRequest) request, (HttpServletResponse) response);
 					return;
 				}	
 			} catch (SQLException e) {
@@ -110,6 +111,8 @@ public class AuthFilter implements Filter {
 				}
 			}
 		}
+		
+		
 
 		// pass the request along the filter chain
 		chain.doFilter(request, response);

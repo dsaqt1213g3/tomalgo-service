@@ -1,17 +1,19 @@
 package dsa.tomalgo.service.handlers;
 
+import dsa.tomalgo.model.AccountProfile;
+
 public class HandlerInfo {
 	private String name;
 	private String handlerClass;
 	private boolean auth;
-	private boolean enterprise;
+	private AccountProfile profile;
 
-	public HandlerInfo(String name, String handlerClass, boolean auth, boolean enterprise) {
+	public HandlerInfo(String name, String handlerClass, boolean auth, AccountProfile profile) {
 		super();
 		this.name = name;
 		this.handlerClass = handlerClass;
 		this.auth = auth;
-		this.enterprise = enterprise;
+		this.profile = profile;
 	}
 
 	public String getName() {
@@ -26,13 +28,12 @@ public class HandlerInfo {
 		return auth;
 	}
 	
-	public boolean needEnterprise() {
-		return enterprise;
+	public boolean needProfile() {
+		return (profile != AccountProfile.None);
+	}
+	
+	public AccountProfile getProfile() {
+		return profile;
 	}
 
-	@Override
-	public String toString() {
-		return "HandlerInfo [name=" + name + ", handlerClass=" + handlerClass
-				+ ", auth=" + auth + ", enterprise=" + enterprise + "]";
-	}	
 }

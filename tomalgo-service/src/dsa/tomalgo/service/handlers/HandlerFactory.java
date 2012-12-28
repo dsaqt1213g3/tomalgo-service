@@ -17,6 +17,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import dsa.tomalgo.model.AccountProfile;
 import dsa.tomalgo.service.ServiceServlet;
 
 public class HandlerFactory {
@@ -102,7 +103,7 @@ public class HandlerFactory {
 						hAction,
 						"dsa.tomalgo.service.handlers.actions." + nElement.getElementsByTagName("handler-class").item(0).getTextContent(),
 						nElement.getAttribute("auth").equals("true"),
-						nElement.getAttribute("enterprise").equals("true")
+						AccountProfile.fromString(nElement.getAttribute("profile"))
 				);
 				handlerList.put(hAction, hInfo);
 			}
