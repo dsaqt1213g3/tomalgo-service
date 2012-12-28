@@ -16,14 +16,13 @@ import dsa.tomalgo.service.handlers.HandlerException;
 
 public class UpdateTagsHandler extends Handler {
 
-	private Connection connection = null;
-	private Statement statement = null;
-	
 	@Override
 	public void process(HttpServletResponse response, HttpServletRequest request) throws HandlerException {
 		Boolean enterprise;
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet resultSet = null;	
 		
-		ResultSet resultSet = null;		
 		// Getting parameters
 		String username = request.getParameter("username");
 		String tags = request.getParameter("tags");
@@ -51,7 +50,15 @@ public class UpdateTagsHandler extends Handler {
 					connection.close();		
 			} catch (SQLException e2) {	}
 			throw new HandlerException(400, "Database error: " + e1.getMessage());
+		} finally {
+			try {								
+				if(resultSet != null)
+					resultSet.close();						
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+		
 		
 		String[] tag = new Gson().fromJson(tags, String[].class);		
 		if(enterprise && tag.length > 3) {
@@ -66,6 +73,13 @@ public class UpdateTagsHandler extends Handler {
          					  	 "select user.id from user " +
          					  	 "where user.username='" + username+ "' and user.id=rl_tag.user);");			
 		} catch (SQLException e) {
+			try {
+				if(statement != null)
+					statement.close();
+				
+				if(connection != null)
+					connection.close();		
+			} catch (SQLException e2) {	}
 			throw new HandlerException(400, "Database error: Cant add the new entry.");
 		}
 				
@@ -73,7 +87,7 @@ public class UpdateTagsHandler extends Handler {
 		// Saving rl_tag into database
 		try {			
 			for( String t : tag)
-				statement.execute("insert into rl_tag " +
+				statement.execute("insert into rl_tag(user,tag) " +
 						          "select user.id,tag.id " +
 						          "from user,tag " +
 						          "where user.username='" + username +"' and tag.name='" + t + "';");			
