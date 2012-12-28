@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE handlers>
 <handlers>
+    <!-- Comune Actions -->
 	<handler>
     	<action>checkuser</action>
     	<handler-class>CheckUserHandler</handler-class>   
@@ -29,6 +30,8 @@
 	    <action>decline</action>
 	    <handler-class>DeclineHandler</handler-class>
 	</handler>
+	
+	<!-- This Service Specific Actions -->
 	<handler auth="true">
 	    <action>updatetags</action>
 	    <handler-class>UpdateTagsHandler</handler-class>

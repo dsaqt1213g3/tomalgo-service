@@ -1,6 +1,11 @@
 package dsa.tomalgo.service;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -58,8 +63,8 @@ public class AuthFilter implements Filter {
 			return;
 		}
 		
-		// If auth needed, checking httpSessions		
-		if(hInfo.isAuth()) {
+		// If auth needed, check httpSessions		
+		if(hInfo.needAuth()) {
 			String username = request.getParameter("username"); 
 			if(username == null || !username.equals(((HttpServletRequest) request).getSession().getAttribute("username"))) {
 				ServletMethod.sendError("Auth needed.", 401, (HttpServletRequest) request, (HttpServletResponse) response);
@@ -67,6 +72,31 @@ public class AuthFilter implements Filter {
 			}
 		}
 		
+		// If enterprise needed, check in the database
+		if(hInfo.needEnterprise()) {
+			System.out.println("Comprobando empresa");
+			String username = request.getParameter("username");
+			if(username == null) {
+				ServletMethod.sendError("Missing parameter.", 400, (HttpServletRequest) request, (HttpServletResponse) response);
+				return;
+			}
+					
+			try {
+				Connection connection = HandlerFactory.newInstance().getDataSource().getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("select enterprise from user where username='" +
+						username + "';");
+				if(!(resultSet.next() && resultSet.getBoolean("enterprise"))) {
+					ServletMethod.sendError("Have to be a enterprise.", 401, (HttpServletRequest) request, (HttpServletResponse) response);
+					return;
+				}	
+			} catch (SQLException e) {
+				ServletMethod.sendError(e.getMessage(), 400, 
+						(HttpServletRequest) request, (HttpServletResponse) response);
+				return;
+			}
+		}
+
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}

@@ -70,6 +70,10 @@ public class HandlerFactory {
 		return handler;
 	}
 	
+	public DataSource getDataSource() {
+		return dataSource;
+	}
+	
 	public HandlerInfo getInfo(String action) throws HandlerException {
 		HandlerInfo hInfo = handlerList.get(action);
 		if(hInfo == null ) throw new HandlerException(404, "Action not found: '" +  action + "'");
@@ -90,17 +94,18 @@ public class HandlerFactory {
 		
 		Node node = nList.item(0);
 		while((node = node.getNextSibling()) != null)
-		if(node.getNodeType() == Node.ELEMENT_NODE)
-		{
-			Element nElement = (Element) node;
-			String hAction = nElement.getElementsByTagName("action").item(0).getTextContent();
-			HandlerInfo hInfo = new HandlerInfo(
-					hAction,
-					"dsa.tomalgo.service.handlers.actions." + nElement.getElementsByTagName("handler-class").item(0).getTextContent(),
-					nElement.getAttribute("auth").equals("true")
-			);
-			
-			handlerList.put(hAction, hInfo);
-		}
+			if(node.getNodeType() == Node.ELEMENT_NODE)
+			{
+				Element nElement = (Element) node;
+				String hAction = nElement.getElementsByTagName("action").item(0).getTextContent();
+				HandlerInfo hInfo = new HandlerInfo(
+						hAction,
+						"dsa.tomalgo.service.handlers.actions." + nElement.getElementsByTagName("handler-class").item(0).getTextContent(),
+						nElement.getAttribute("auth").equals("true"),
+						nElement.getAttribute("enterprise").equals("true")
+				);
+				System.out.println(hInfo.toString());
+				handlerList.put(hAction, hInfo);
+			}
 	}
 }
