@@ -10,7 +10,7 @@
     	<action>login</action>
     	<handler-class>LoginHandler</handler-class>   
 	</handler>
-	<handler auth="true" profile="Client">
+	<handler auth="true">
     	<action>logout</action>
     	<handler-class>LogoutHandler</handler-class>   
 	</handler>  
