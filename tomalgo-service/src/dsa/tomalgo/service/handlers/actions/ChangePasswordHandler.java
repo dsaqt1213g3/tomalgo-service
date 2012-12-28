@@ -19,7 +19,7 @@ public class ChangePasswordHandler extends Handler {
 		Statement statement = null;
 		
 		// Getting parameters
-		String username = (String) request.getParameter("username");
+		String username = (String) request.getSession().getAttribute("username");
 		String oldpassword = (String) request.getParameter("oldpassword");
 		String newpassword = (String) request.getParameter("newpassword");
 			

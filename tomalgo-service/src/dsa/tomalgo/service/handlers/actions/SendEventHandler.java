@@ -11,49 +11,44 @@ import dsa.tomalgo.service.ServletMethod;
 import dsa.tomalgo.service.handlers.Handler;
 import dsa.tomalgo.service.handlers.HandlerException;
 
-public class DeclineHandler extends Handler {
+public class SendEventHandler extends Handler {
 
 	@Override
 	public void process(HttpServletResponse response, HttpServletRequest request) throws HandlerException {
 		Connection connection = null;
-		Statement statement = null;
+		Statement statement = null;	
 		
 		// Getting parameters
 		String username = (String) request.getSession().getAttribute("username");
-		String password = (String) request.getParameter("password");
-		if(username == null || password == null) 
+		String text = request.getParameter("text");
+		String inidate = request.getParameter("inidate");
+		String enddate = request.getParameter("enddate");
+		String isevent = request.getParameter("isevent");
+		if(username == null || text == null || inidate == null || enddate == null || isevent == null)
 			throw new HandlerException(400, "Missing parameter in " + this.getClass().getSimpleName());
-		
-		// Asking database
-		int updates;
-		try {
-			connection = dataSource.getConnection();
-			statement = connection.createStatement();
-						
-			updates = statement.executeUpdate("update user set enable=0 " +
-					"where username='" + username + "' and password=0x" + password + ";");		
 				
-		} catch (SQLException e) {
-			throw new HandlerException(400, "Database error: " + e.getMessage());
+		try {
+			connection = dataSource.getConnection();			
+			statement = connection.createStatement();
+			statement.execute( "insert into event(enterprise,text,inidate,enddate,promo,assist) " +
+					"select id,'"+ text + "','" + inidate + "','" + enddate + "'," + isevent + ",0 " +
+					"from user where username='" + username + "';");						
+		} catch (SQLException e1) {			
+			throw new HandlerException(400, "Database error: " + e1.getMessage());
 		} finally {
-			try {
+			try {					
 				if(statement != null)
 					statement.close();
 				
 				if(connection != null)
-					connection.close();						
+					connection.close();							
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-			
-		// Sending JSON result	
-		if(updates == 1) {
-			request.getSession().removeAttribute("username");
-			ServletMethod.sendResult("true", request, response);
-		}
-		else 
-			ServletMethod.sendResult("false", request, response);
+		
+		// Sending JSON result
+		ServletMethod.sendResult("Succeed", request, response);
 	}
 	
 }

@@ -65,8 +65,7 @@ public class AuthFilter implements Filter {
 		
 		// If auth needed, check httpSessions		
 		if(hInfo.needAuth()) {
-			String username = request.getParameter("username"); 
-			if(username == null || !username.equals(((HttpServletRequest) request).getSession().getAttribute("username"))) {
+			if(((HttpServletRequest) request).getSession().getAttribute("username") == null) {
 				ServletMethod.sendError("Auth needed.", 401, (HttpServletRequest) request, (HttpServletResponse) response);
 				return;
 			}
@@ -74,17 +73,19 @@ public class AuthFilter implements Filter {
 		
 		// If enterprise needed, check in the database
 		if(hInfo.needEnterprise()) {
-			System.out.println("Comprobando empresa");
-			String username = request.getParameter("username");
+			String username = (String) ((HttpServletRequest) request).getSession().getAttribute("username");
 			if(username == null) {
 				ServletMethod.sendError("Missing parameter.", 400, (HttpServletRequest) request, (HttpServletResponse) response);
 				return;
 			}
-					
+			
+			Connection connection = null;	
+			Statement statement = null;
+			ResultSet resultSet = null;
 			try {
-				Connection connection = HandlerFactory.newInstance().getDataSource().getConnection();
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("select enterprise from user where username='" +
+				connection = HandlerFactory.newInstance().getDataSource().getConnection();
+				statement = connection.createStatement();
+				resultSet = statement.executeQuery("select enterprise from user where username='" +
 						username + "';");
 				if(!(resultSet.next() && resultSet.getBoolean("enterprise"))) {
 					ServletMethod.sendError("Have to be a enterprise.", 401, (HttpServletRequest) request, (HttpServletResponse) response);
@@ -94,6 +95,19 @@ public class AuthFilter implements Filter {
 				ServletMethod.sendError(e.getMessage(), 400, 
 						(HttpServletRequest) request, (HttpServletResponse) response);
 				return;
+			} finally {
+				try {	
+					if(resultSet != null)
+						resultSet.close();
+					
+					if(statement != null)
+						statement.close();
+					
+					if(connection != null)
+						connection.close();						
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 

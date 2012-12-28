@@ -104,7 +104,6 @@ public class HandlerFactory {
 						nElement.getAttribute("auth").equals("true"),
 						nElement.getAttribute("enterprise").equals("true")
 				);
-				System.out.println(hInfo.toString());
 				handlerList.put(hAction, hInfo);
 			}
 	}

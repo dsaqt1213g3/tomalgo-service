@@ -24,7 +24,7 @@ public class UpdateTagsHandler extends Handler {
 		ResultSet resultSet = null;	
 		
 		// Getting parameters
-		String username = request.getParameter("username");
+		String username = (String) request.getSession().getAttribute("username");
 		String tags = request.getParameter("tags");
 		if(username == null || tags == null)
 			throw new HandlerException(400, "Missing parameter in " + this.getClass().getSimpleName());

@@ -36,4 +36,8 @@
 	    <action>updatetags</action>
 	    <handler-class>UpdateTagsHandler</handler-class>
 	</handler>
+	<handler auth="true" enterprise="true">
+	    <action>sendevent</action>
+	    <handler-class>SendEventHandler</handler-class>
+	</handler>
 </handlers>
