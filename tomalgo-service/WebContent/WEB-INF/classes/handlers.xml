@@ -25,4 +25,8 @@
     	<action>changepassword</action>
     	<handler-class>ChangePasswordHandler</handler-class>   
 	</handler> 
+	<handler auth="true">
+	    <action>decline</action>
+	    <handler-class>DeclineHandler</handler-class>
+	</handler>
 </handlers>
