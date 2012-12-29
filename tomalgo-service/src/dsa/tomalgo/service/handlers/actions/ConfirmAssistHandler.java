@@ -1,7 +1,6 @@
 package dsa.tomalgo.service.handlers.actions;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -12,13 +11,12 @@ import dsa.tomalgo.service.ServletMethod;
 import dsa.tomalgo.service.handlers.Handler;
 import dsa.tomalgo.service.handlers.HandlerException;
 
-public class QueryAssistsHandler extends Handler {
+public class ConfirmAssistHandler extends Handler {
 
 	@Override
 	public void process(HttpServletResponse response, HttpServletRequest request) throws HandlerException {
 		Connection connection = null;
 		Statement statement = null;
-		ResultSet resultSet = null;
 		
 		// Getting parameters
 		String username = (String) request.getSession().getAttribute("username");
@@ -29,7 +27,6 @@ public class QueryAssistsHandler extends Handler {
 		
 		// Asking database
 		ConfirmPasswordResult confirmPassResult;
-		int assists = 0;
 		try {
 			connection = dataSource.getConnection();
 			statement = connection.createStatement();
@@ -38,18 +35,13 @@ public class QueryAssistsHandler extends Handler {
 			if(!confirmPassResult.getSucceed())
 				throw new HandlerException(401, "Auth needed.");
 			
-			resultSet = statement.executeQuery("select event from rl_event where event='" + event + "';");
-			
-			resultSet.last();
-			assists = resultSet.getRow();
-			
+			statement.execute("insert into rl_event " +
+					"select user.id,'" + event + "' " +
+					"from user where user.username='" + username + "';");
 		} catch (SQLException e) {
 			throw new HandlerException(400, "Database error: " + e.getMessage());
 		} finally {
-			try {	
-				if(resultSet != null)
-					resultSet.close();
-				
+			try {					
 				if(statement != null)
 					statement.close();
 				
@@ -61,7 +53,7 @@ public class QueryAssistsHandler extends Handler {
 		}
 		
 		// Sending JSON result
-		ServletMethod.sendResult("\"" + assists + "\"", request, response);
+		ServletMethod.sendResult("\"Succeed\"", request, response);
 	}
 	
 }

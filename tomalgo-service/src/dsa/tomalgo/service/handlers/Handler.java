@@ -51,38 +51,43 @@ public abstract class Handler {
 	
 	public abstract void process(HttpServletResponse response, HttpServletRequest request) throws HandlerException ;
 	
-	protected ConfirmPasswordResult confirmPassword(String username, String password, Connection connection, Statement statement) throws HandlerException {
+	protected ConfirmPasswordResult confirmPassword(String username, String password, Connection connection, Statement statement) throws HandlerException, SQLException {
 		// Asking database
 		ConfirmPasswordResult result;
 		ResultSet resultSet = null;
-		try {
-			connection = dataSource.getConnection();
-			statement = connection.createStatement();
-			resultSet = statement.executeQuery("select password,enterprise,enable from user " +
-					"where username='" + username + "';");
-			
-			if(resultSet.next()){
-				if(resultSet.getBoolean("enable")) {
-					if(Util.toHexString(resultSet.getBytes("password")).equals(password)) {						
-						result = new ConfirmPasswordResult(true, resultSet.getBoolean("enterprise"), null);
-					} else 						
-						result = new ConfirmPasswordResult(false, null, "Incorrect password.");
-				} else 			
-					result = new ConfirmPasswordResult(false, null, "The account is not activated.");
+		
+		connection = dataSource.getConnection();
+		statement = connection.createStatement();
+		resultSet = statement.executeQuery("select password,enterprise,enable from user " +
+				"where username='" + username + "';");
+		
+		if(resultSet.next()){
+			if(resultSet.getBoolean("enable")) {
+				if(Util.toHexString(resultSet.getBytes("password")).equals(password)) {						
+					result = new ConfirmPasswordResult(true, resultSet.getBoolean("enterprise"), null);
+				} else 						
+					result = new ConfirmPasswordResult(false, null, "Incorrect password.");
+			} else 			
+				result = new ConfirmPasswordResult(false, null, "The account is not activated.");
 
-			} else 
-				result = new ConfirmPasswordResult(false, null, "The account doesn't exist.");
+		} else 
+			result = new ConfirmPasswordResult(false, null, "The account doesn't exist.");
 			
-		} catch (SQLException e) {
-			throw new HandlerException(400, "Database error: " + e.getMessage());
-		} finally {
-			try {
-				if(resultSet != null)
-					resultSet.close();						
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
 		return result;
+	}
+	
+	protected Boolean isEnterprise(String username, Connection connection , Statement statement) throws SQLException, HandlerException {
+		boolean enterprise;	
+		
+		ResultSet resultSet = statement.executeQuery("select enterprise from user " +
+				"where username='" + username + "';");		
+		if(resultSet.next())
+			enterprise = resultSet.getBoolean("enterprise");
+		else 
+			throw new HandlerException(401, "Auth needed.");	
+		
+		resultSet.close();
+		
+		return enterprise;		
 	}
 }
