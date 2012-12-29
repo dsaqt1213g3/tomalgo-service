@@ -40,4 +40,8 @@
 	    <action>sendevent</action>
 	    <handler-class>SendEventHandler</handler-class>
 	</handler>
+	<handler auth="true" profile="Enterprise">
+	    <action>queryassists</action>
+	    <handler-class>QueryAssistsHandler</handler-class>
+	</handler>
 </handlers>

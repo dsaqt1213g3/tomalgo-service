@@ -31,7 +31,7 @@ public class SendEventHandler extends Handler {
 			connection = dataSource.getConnection();			
 			statement = connection.createStatement();
 			statement.execute( "insert into event(enterprise,text,inidate,enddate,promo,assist) " +
-					"select id,'"+ text + "','" + inidate + "','" + enddate + "'," + isevent + ",0 " +
+					"select id,'"+ text + "','" + inidate + "','" + enddate + "'," + isevent +
 					"from user where username='" + username + "';");						
 		} catch (SQLException e1) {			
 			throw new HandlerException(400, "Database error: " + e1.getMessage());
