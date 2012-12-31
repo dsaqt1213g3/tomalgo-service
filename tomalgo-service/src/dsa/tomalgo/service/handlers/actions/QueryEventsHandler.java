@@ -73,7 +73,7 @@ public class QueryEventsHandler extends Handler {
 				"SELECT event.id,user.username,event.text,event.inidate,event.enddate,event.promo " +
 				"FROM user,rl_tag,event " +
 				"WHERE user.id=rl_tag.user AND user.id=event.enterprise AND user.enterprise=true " +
-				"AND now() < event.enddate AND rl_tag.tag IN ( " +
+				"AND event.inidate < now() AND now() < event.enddate AND rl_tag.tag IN ( " +
 					"SELECT tag " +
 					"FROM user,rl_tag " +
 					"WHERE rl_tag.user=user.id AND user.username='" + username + "'" +
