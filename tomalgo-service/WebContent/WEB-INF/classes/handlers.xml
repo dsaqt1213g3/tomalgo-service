@@ -52,4 +52,8 @@
 	    <action>queryevents</action>
 	    <handler-class>QueryEventsHandler</handler-class>
 	</handler>
+	<handler auth="true" profile="Client">
+	    <action>queryoldevents</action>
+	    <handler-class>QueryOldEventsHandler</handler-class>
+	</handler>
 </handlers>
