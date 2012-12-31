@@ -48,4 +48,8 @@
 	    <action>confirmassist</action>
 	    <handler-class>ConfirmAssistHandler</handler-class>
 	</handler>
+	<handler auth="true">
+	    <action>queryevents</action>
+	    <handler-class>QueryEventsHandler</handler-class>
+	</handler>
 </handlers>

@@ -55,7 +55,15 @@ public class Event {
 		return new Gson().fromJson(json, Event.class);
 	}
 	
-	public static Vector<Event> fromDB(ResultSet resultSet) throws SQLException {
+	public static String toJSONVector(Event[] events) {
+		return new Gson().toJson(events);
+	}
+	
+	public static Event[] fromJSONVector(String json) {
+		return new Gson().fromJson(json, Event[].class);
+	}
+	
+	public static Event[] fromDB(ResultSet resultSet) throws SQLException {
 		Vector<Event> events = new Vector<>();
 		while(resultSet.next()) {
 			Event event = new Event(
@@ -68,7 +76,7 @@ public class Event {
 			);
 			events.add(event);
 		}		
-		return events;
+		return events.toArray(new Event[events.size()]);
 	}
 	
 	@Override
