@@ -70,7 +70,7 @@ public class QueryEventsHandler extends Handler {
 	
 	private String clientQuery(Statement statement, String username) throws SQLException {
 		return Event.toJSONVector(Event.fromDB(statement.executeQuery(
-				"SELECT event.id,user.username,event.text,event.inidate,event.enddate,event.promo " +
+				"SELECT DISTINCT event.id,user.username,event.text,event.inidate,event.enddate,event.promo " +
 				"FROM user,rl_tag,event " +
 				"WHERE user.id=rl_tag.user AND user.id=event.enterprise AND user.enterprise=true " +
 				"AND event.inidate < now() AND now() < event.enddate AND rl_tag.tag IN ( " +
