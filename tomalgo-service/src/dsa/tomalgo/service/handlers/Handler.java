@@ -16,13 +16,15 @@ public abstract class Handler {
 		Boolean succeed;
 		Boolean enterprise;
 		String message;
+		String mail;
 					
 		public ConfirmPasswordResult(Boolean succeed, Boolean enterprise,
-				String message) {
+				String message, String mail) {
 			super();
 			this.succeed = succeed;
 			this.enterprise = enterprise;
 			this.message = message;
+			this.mail = mail;
 		}
 		
 		public Boolean getSucceed() {
@@ -35,7 +37,16 @@ public abstract class Handler {
 			return message;
 		}
 		
-		
+		public String getMail() {
+			return mail;
+		}
+
+		@Override
+		public String toString() {
+			return "ConfirmPasswordResult [succeed=" + succeed
+					+ ", enterprise=" + enterprise + ", message=" + message
+					+ ", mail=" + mail + "]";
+		}		
 	}
 	
 	
@@ -58,20 +69,20 @@ public abstract class Handler {
 		
 		connection = dataSource.getConnection();
 		statement = connection.createStatement();
-		resultSet = statement.executeQuery("select password,enterprise,enable from user " +
+		resultSet = statement.executeQuery("select password,mail,enterprise,enable from user " +
 				"where username='" + username + "';");
-		
+	
 		if(resultSet.next()){
 			if(resultSet.getBoolean("enable")) {
 				if(Util.toHexString(resultSet.getBytes("password")).equals(password)) {						
-					result = new ConfirmPasswordResult(true, resultSet.getBoolean("enterprise"), null);
+					result = new ConfirmPasswordResult(true, resultSet.getBoolean("enterprise"), null, resultSet.getString("mail"));
 				} else 						
-					result = new ConfirmPasswordResult(false, null, "Incorrect password.");
+					result = new ConfirmPasswordResult(false, null, "Incorrect password.", null);
 			} else 			
-				result = new ConfirmPasswordResult(false, null, "The account is not activated.");
+				result = new ConfirmPasswordResult(false, null, "The account is not activated.", null);
 
 		} else 
-			result = new ConfirmPasswordResult(false, null, "The account doesn't exist.");
+			result = new ConfirmPasswordResult(false, null, "The account doesn't exist.", null);
 			
 		return result;
 	}

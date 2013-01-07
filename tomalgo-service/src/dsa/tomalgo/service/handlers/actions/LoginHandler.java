@@ -49,7 +49,7 @@ public class LoginHandler extends Handler {
 		String result;
 		if(confirmPassResult.getSucceed()) {
 			request.getSession().setAttribute("username", username);
-			result = "{\"succeed\":true,\"enterprise\":"+ confirmPassResult.getEnterprise() +"}";
+			result = "{\"succeed\":true,\"enterprise\":"+ confirmPassResult.getEnterprise() +",\"mail\":\"" +confirmPassResult.getMail()+"\"}";
 		}
 		else
 			result = "{\"succeed\":false,\"message\":\""+ confirmPassResult.getMessage() +"\"}";
