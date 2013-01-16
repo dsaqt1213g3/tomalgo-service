@@ -59,9 +59,8 @@ public class QueryAssistsHandler extends Handler {
 				e.printStackTrace();
 			}
 		}
-		
 		// Sending JSON result
-		ServletMethod.sendResult("\"" + assists + "\"", request, response);
+		ServletMethod.sendResult(Integer.toString(assists), request, response);
 	}
 	
 }

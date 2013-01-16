@@ -26,6 +26,8 @@ public class ChangePasswordHandler extends Handler {
 		if(username == null || oldpassword == null || newpassword == null)
 			throw new HandlerException(401, "Missing parameter in " + this.getClass().getSimpleName());
 		
+		System.out.println(oldpassword);
+		System.out.println(newpassword);
 		// Checking oldpassword equals newpassword
 		try {
 			connection = dataSource.getConnection();

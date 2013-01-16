@@ -56,8 +56,6 @@ public abstract class Handler {
 		ConfirmPasswordResult result;
 		ResultSet resultSet = null;
 		
-		connection = dataSource.getConnection();
-		statement = connection.createStatement();
 		resultSet = statement.executeQuery("select password,enterprise,enable from user " +
 				"where username='" + username + "';");
 		
@@ -73,6 +71,7 @@ public abstract class Handler {
 		} else 
 			result = new ConfirmPasswordResult(false, null, "The account doesn't exist.");
 			
+		resultSet.close();
 		return result;
 	}
 	
