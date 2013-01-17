@@ -3,6 +3,10 @@
 	
 <%
 	String output = null;
+	String error = request.getAttribute("result").toString();
+	
+	if(error == null) error = "Unknown Error";
+	
 	if (request.getParameter("callback") != null)
 		output = request.getParameter("callback") + "("
 				+ request.getAttribute("result") + ")";
