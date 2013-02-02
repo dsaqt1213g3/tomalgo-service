@@ -10,18 +10,18 @@
 
 # Configuración de la base de datos:
 
-1. Crear una base de datos en mysql llamada Tomalgo y darle persmisos a un usuario todos los persmisos sobre esa
+1. Crear una base de datos en mysql llamada Tomalgo y darle permisos a un usuario todos los permisos sobre esa
    base de datos.
 
 2. Una vez tenemos la base de datos creada ejecutar el archivo tomalgo_data.sql o tomalgo.sql que se encuentran
-   en la carpeta de sql dependiendo si queremos una base de datos con algunos datos o la queremos vacia.
+   en la carpeta de sql dependiendo si queremos una base de datos con algunos datos o la queremos vacía.
     
 # Configuración del servicio:
 
 1. Abrir el archivo WebContent/META-INF/context.xml y editar los valores de username="user" password="password" y poner los
    que se han utilizado para la base de datos.
    
-2. Exportar el proyecto como WAR y añadirlo al servicor de tomcat. El path del servicio es:
+2. Exportar el proyecto como WAR y añadirlo al servidor de tomcat. El path del servicio es:
 						
 				 localhost:puerto_tomcat/tomalgo-service/ServiceServlet?
 				 
