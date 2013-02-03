@@ -27,6 +27,7 @@ public class ConfirmAssistHandler extends Handler {
 		
 		// Asking database
 		ConfirmPasswordResult confirmPassResult;
+		boolean result = false;
 		try {
 			connection = dataSource.getConnection();
 			statement = connection.createStatement();
@@ -34,12 +35,12 @@ public class ConfirmAssistHandler extends Handler {
 			confirmPassResult = confirmPassword(username, password, connection, statement);
 			if(!confirmPassResult.getSucceed())
 				throw new HandlerException(401, "Auth needed.");
-			
 			statement.execute("insert into rl_event " +
-					"select user.id,'" + event + "' " +
-					"from user where user.username='" + username + "';");
+						"select user.id,'" + event + "' " +
+						"from user where user.username='" + username + "';");
+			result = true;
 		} catch (SQLException e) {
-			throw new HandlerException(400, "Database error: " + e.getMessage());
+			result = false;
 		} finally {
 			try {					
 				if(statement != null)
@@ -51,9 +52,8 @@ public class ConfirmAssistHandler extends Handler {
 				e.printStackTrace();
 			}
 		}
-		
 		// Sending JSON result
-		ServletMethod.sendResult("\"Succeed\"", request, response);
+		ServletMethod.sendResult(Boolean.toString(result), request, response);
 	}
 	
 }
